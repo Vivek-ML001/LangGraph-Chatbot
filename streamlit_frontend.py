@@ -3,7 +3,7 @@ import streamlit as st
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph_backend import chatbot, retrive_all_thread, delete_thread_from_db
 
-# --- Helper Functions ---
+# Utility function to generate a unique thread ID string
 def generate_thread_id():
     return str(uuid.uuid4())
 
@@ -15,12 +15,11 @@ def load_conversation(thread_id):
     state = chatbot.get_state(config={'configurable': {'thread_id': thread_id}})
     return state.values.get('messages', [])
 
+# Get custom title if renamed, or default to the first user prompt
 def get_thread_title(thread_id):
-    # Check if a custom title exists first
     if thread_id in st.session_state.get('custom_titles', {}):
         return st.session_state['custom_titles'][thread_id]
     
-    # Fall back to the first human message
     messages = load_conversation(thread_id)
     for mesg in messages:
         if isinstance(mesg, HumanMessage):
@@ -33,7 +32,7 @@ def reset_chat():
     add_thread(st.session_state['thread_id'])
     st.session_state['message_history'] = []
 
-# --- 1. Session State Setup ---
+# 1. Initialize session states
 if 'chat_thread' not in st.session_state:
     st.session_state['chat_thread'] = retrive_all_thread()
 
@@ -43,6 +42,7 @@ if 'custom_titles' not in st.session_state:
 if 'message_history' not in st.session_state:
     st.session_state['message_history'] = []
 
+# Ensure at least one active thread
 if not st.session_state['chat_thread']:
     new_id = generate_thread_id()
     st.session_state['thread_id'] = new_id
@@ -51,26 +51,24 @@ if not st.session_state['chat_thread']:
 if 'thread_id' not in st.session_state:
     st.session_state['thread_id'] = st.session_state['chat_thread'][0]
 
-# --- 2. Sidebar Setup ---
+# 2. Sidebar setup
 st.sidebar.title('Langgraph Chatbot')
 
 if st.sidebar.button('➕ New Chat', use_container_width=True):
     reset_chat()
     st.rerun()
 
-st.sidebar.header('My Conversations')
+st.sidebar.header('My Conversation')
 
-# Render past threads with Delete & Rename actions
-for thread_id in st.session_state['chat_thread']:
+# Render sidebar buttons with Rename & Delete controls
+for thread_id in list(st.session_state['chat_thread']):
     title = get_thread_title(thread_id)
     display_title = title[:18] + ("..." if len(title) > 18 else "")
 
-    # Create 3 columns: [Thread Select Button] [Rename Popover] [Delete Button]
     col1, col2, col3 = st.sidebar.columns([0.65, 0.175, 0.175])
 
-    # 1. Switch Active Thread
+    # 1. Select active thread
     with col1:
-        # Highlight active thread button visually
         btn_type = "primary" if thread_id == st.session_state['thread_id'] else "secondary"
         if st.button(display_title, key=f"btn_{thread_id}", type=btn_type, use_container_width=True):
             st.session_state['thread_id'] = thread_id
@@ -89,7 +87,7 @@ for thread_id in st.session_state['chat_thread']:
             st.session_state['message_history'] = temp_message
             st.rerun()
 
-    # 2. Rename Thread (using st.popover)
+    # 2. Rename Thread (st.popover)
     with col2:
         with st.popover("✏️"):
             new_title = st.text_input("New Name", value=title, key=f"input_{thread_id}")
@@ -101,13 +99,12 @@ for thread_id in st.session_state['chat_thread']:
     # 3. Delete Thread
     with col3:
         if st.button("🗑️", key=f"del_{thread_id}"):
-            # Delete from DB and session state
             delete_thread_from_db(thread_id)
-            st.session_state['chat_thread'].remove(thread_id)
+            if thread_id in st.session_state['chat_thread']:
+                st.session_state['chat_thread'].remove(thread_id)
             if thread_id in st.session_state['custom_titles']:
                 del st.session_state['custom_titles'][thread_id]
 
-            # If active thread was deleted, reset or switch to another
             if st.session_state['thread_id'] == thread_id:
                 if st.session_state['chat_thread']:
                     st.session_state['thread_id'] = st.session_state['chat_thread'][0]
@@ -123,11 +120,12 @@ for thread_id in st.session_state['chat_thread']:
 
 st.sidebar.caption(f"**Active Thread:** `{st.session_state['thread_id']}`")
 
-# --- 3. Render Messages & Chat Input ---
+# 3. Render previous conversation history
 for message in st.session_state['message_history']:
     with st.chat_message(message['role']):
         st.markdown(message['content'])
 
+# 4. Handle user input & invoke chatbot
 user_input = st.chat_input('Type here')
 
 if user_input:
