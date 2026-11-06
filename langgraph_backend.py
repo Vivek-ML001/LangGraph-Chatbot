@@ -40,6 +40,17 @@ def retrive_all_thread():
         all_thread.add(checkpoint.config['configurable']['thread_id'])
     return list(all_thread)   
 
+# for the delection method 
+
+def delete_thread_from_db(thread_id):
+    cursor = conn.cursor()
+    # Delete checkpoints for the specific thread
+    cursor.execute("DELETE FROM checkpoints WHERE thread_id = ?", (thread_id,))
+    conn.commit()
+
+
+
+
 
 
 # CONFIG = {'configurable': {'thread_id': 'thread-1'}}
