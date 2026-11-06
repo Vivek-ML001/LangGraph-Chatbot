@@ -179,18 +179,6 @@ if not st.session_state['message_history']:
         unsafe_allow_html=True,
     )
 
-    suggestions = [
-        "💡 Explain a concept simply",
-        "💻 Help me debug my code",
-        "📝 Summarize some text",
-        "🚀 Give me project ideas",
-    ]
-    cols = st.columns(2)
-    for i, s in enumerate(suggestions):
-        if cols[i % 2].button(s, key=f"sugg_{i}"):
-            st.session_state['pending_prompt'] = s.split(" ", 1)[1]
-            st.rerun()
-
 for message in st.session_state['message_history']:
     with st.chat_message(message['role']):
         st.markdown(message['content'])
