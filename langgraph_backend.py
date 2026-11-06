@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
 import sqlite3
+import tempfile
 
 load_dotenv()
 
@@ -23,7 +24,9 @@ def chat_node(state: ChatState):
     response = llm.invoke(messages)
     return {"messages": [response]}
 
-conn = sqlite3.connect(database='chatbot.db',check_same_thread=False)
+
+DB_PATH = os.path.join(tempfile.gettempdir(), "chatbot.db")
+conn = sqlite3.connect(database=DB_PATH, check_same_thread=False)
 # Checkpointer
 checkpointer = SqliteSaver(conn=conn)           
 
