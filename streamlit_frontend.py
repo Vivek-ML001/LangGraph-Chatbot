@@ -173,7 +173,6 @@ if not st.session_state['message_history']:
     st.markdown(
         f"""
         <div class="greet-wrap">
-            <div class="greet-hi">Hello, {USER_NAME}</div>
             <div class="greet-q">Where should we start?</div>
         </div>
         """,
