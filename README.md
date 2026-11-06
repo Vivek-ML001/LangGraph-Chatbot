@@ -38,20 +38,9 @@ An interactive, multi-threaded conversational AI application built with **LangGr
 - **Markdown Support:** Code snippets, tables, lists and rich text render in both user and assistant bubbles.
 - **State Recovery:** History survives browser refreshes, restored from the SQLite checkpointer.
 
-## 📁 Project Structure
+   ## 📁 Project Structure
 
-```text
-Lang_Graph_Chat/
-├── assets/                  # Screenshots & demo GIF
-│   └── demo.gif
-├── .env                     # Environment variables (API keys)
-├── .gitignore               # Excluded files
-├── README.md                # Project documentation
-├── requirements.txt         # Python dependencies
-├── chatbot.db               # SQLite checkpoints (auto-generated)
-├── langgraph_backend.py     # LangGraph state graph & checkpointer setup
-└── streamlit_frontend.py    # Streamlit multi-thread UI
-```
+   ![Project Structure](assets/structure.svg)
 
 ## 🛠️ Tech Stack
 
