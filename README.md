@@ -1,12 +1,12 @@
-# 🤖 LangGraph Chatbot with Streamlit Frontend
+#  LangGraph Chatbot with Streamlit Frontend
 
 An interactive, multi-threaded conversational AI application built with **LangGraph**, **LangChain**, and **Streamlit**. It uses an SQLite checkpointer to persist conversation histories across sessions and dynamically names past threads in the sidebar using actual user prompts, much like ChatGPT and Gemini.
 
-## 📽️ Demo
+##  Demo
 
 ![Demo](assets/demo.gif)
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
@@ -30,7 +30,7 @@ An interactive, multi-threaded conversational AI application built with **LangGr
 └─────────────────────────────────────────────────────────┘
 ```
 
-## ✨ Features
+##  Features
 
 - **Multi-Threaded Conversations:** Create new chats or switch between past sessions using unique `thread_id`s.
 - **Persistent State Memory:** All message histories are stored in a local SQLite database (`chatbot.db`) via `SqliteSaver`.
@@ -38,11 +38,22 @@ An interactive, multi-threaded conversational AI application built with **LangGr
 - **Markdown Support:** Code snippets, tables, lists and rich text render in both user and assistant bubbles.
 - **State Recovery:** History survives browser refreshes, restored from the SQLite checkpointer.
 
-   ## 📁 Project Structure
+##  Project Structure
 
-   ![Project Structure](assets/structure.svg)
+```text
+Lang_Graph_Chat/
+├── assets/                  # Screenshots & demo GIF
+│   └── demo.gif
+├── .env                     # Environment variables (API keys)
+├── .gitignore               # Excluded files
+├── README.md                # Project documentation
+├── requirements.txt         # Python dependencies
+├── chatbot.db               # SQLite checkpoints (auto-generated)
+├── langgraph_backend.py     # LangGraph state graph & checkpointer setup
+└── streamlit_frontend.py    # Streamlit multi-thread UI
+```
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Tool |
 |---|---|
@@ -85,7 +96,7 @@ Create a `.env` file in the root directory:
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-## 🏃 Run the Application
+##  Run the Application
 ```bash
 streamlit run streamlit_frontend.py
 ```
