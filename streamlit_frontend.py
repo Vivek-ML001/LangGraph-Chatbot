@@ -7,25 +7,26 @@ st.set_page_config(page_title="Langgraph Chatbot", page_icon="✨", layout="cent
 
 USER_NAME = "Vivek"
 
-# ---------------- Gemini-style CSS ----------------
+# ---------------- Gemini-style DARK CSS ----------------
 st.markdown("""
 <style>
-#MainMenu, footer, header[data-testid="stHeader"] {background: transparent;}
+header[data-testid="stHeader"] {background: transparent;}
 footer {visibility: hidden;}
 
 /* Background gradient */
 .stApp {
-    background: radial-gradient(ellipse at 70% 80%, #cfe3fb 0%, #e8f0fc 35%, #ffffff 75%);
+    background: radial-gradient(ellipse at 70% 85%, #1d3557 0%, #16202f 30%, #131314 70%);
+    color: #e3e3e3;
 }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background: #f0f4f9;
+    background: #1e1f20;
     border-right: none;
 }
-[data-testid="stSidebar"] h1 {font-size: 1.3rem; font-weight: 500;}
+[data-testid="stSidebar"] h1 {font-size: 1.3rem; font-weight: 500; color: #e3e3e3;}
 [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
-    font-size: 0.85rem; font-weight: 500; color: #444746; margin-top: 1rem;
+    font-size: 0.85rem; font-weight: 500; color: #c4c7c5; margin-top: 1rem;
 }
 [data-testid="stSidebar"] button {
     width: 100%;
@@ -34,16 +35,16 @@ footer {visibility: hidden;}
     border: none;
     border-radius: 999px;
     background: transparent;
-    color: #1f1f1f;
+    color: #e3e3e3;
     padding: 0.45rem 1rem;
     box-shadow: none;
 }
-[data-testid="stSidebar"] button:hover {background: #e1e7ef;}
+[data-testid="stSidebar"] button:hover {background: #333537;}
 /* Active chat highlight */
 [data-testid="stSidebar"] button[data-testid="stBaseButton-primary"],
 [data-testid="stSidebar"] button[kind="primary"] {
-    background: #d3e3fd;
-    color: #041e49;
+    background: #004a77;
+    color: #c2e7ff;
     font-weight: 500;
 }
 
@@ -54,18 +55,18 @@ footer {visibility: hidden;}
     background: linear-gradient(90deg, #4285f4, #9b72cb, #d96570);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
-.greet-q {font-size: 2.6rem; font-weight: 400; color: #444746; margin-top: -0.3rem;}
+.greet-q {font-size: 2.6rem; font-weight: 400; color: #c4c7c5; margin-top: -0.3rem;}
 
-/* Suggestion chips (main area buttons) */
-section.main .stButton > button, [data-testid="stMain"] .stButton > button {
+/* Suggestion chips */
+[data-testid="stMain"] .stButton > button {
     border-radius: 999px;
-    border: 1px solid #dde3ea;
-    background: rgba(255,255,255,0.8);
-    color: #1f1f1f;
+    border: 1px solid #444746;
+    background: rgba(30,31,32,0.85);
+    color: #e3e3e3;
     padding: 0.55rem 1.1rem;
     width: 100%;
 }
-[data-testid="stMain"] .stButton > button:hover {background: #e9eef6; border-color: #c4d0e0;}
+[data-testid="stMain"] .stButton > button:hover {background: #333537; border-color: #5f6368;}
 
 /* Hide avatars */
 [data-testid="stChatMessageAvatarUser"],
@@ -73,12 +74,11 @@ section.main .stButton > button, [data-testid="stMain"] .stButton > button {
 
 /* Messages */
 [data-testid="stChatMessage"] {background: transparent; padding: 0.4rem 0;}
-/* User bubble, right aligned */
 [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
     flex-direction: row-reverse;
 }
 [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) [data-testid="stChatMessageContent"] {
-    background: #e9eef6;
+    background: #282a2c;
     border-radius: 22px;
     padding: 0.7rem 1.1rem;
     max-width: 75%;
@@ -88,13 +88,13 @@ section.main .stButton > button, [data-testid="stMain"] .stButton > button {
 /* Chat input pill */
 [data-testid="stChatInput"] {
     border-radius: 32px;
-    background: #ffffff;
-    border: none;
-    box-shadow: 0 2px 10px rgba(60,64,67,0.15);
+    background: #1e1f20;
+    border: 1px solid #333537;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
     padding: 0.25rem 0.5rem;
 }
-[data-testid="stChatInput"] textarea {font-size: 1.05rem;}
-[data-testid="stBottom"] > div {background: transparent;}
+[data-testid="stChatInput"] textarea {font-size: 1.05rem; color: #e3e3e3;}
+[data-testid="stBottom"], [data-testid="stBottom"] > div {background: transparent;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -177,7 +177,6 @@ for thread_id in reversed(st.session_state['chat_thread']):
 
 
 # ---------------- Main area ----------------
-# Empty state: greeting + suggestion chips
 if not st.session_state['message_history']:
     st.markdown(
         f"""
@@ -201,13 +200,12 @@ if not st.session_state['message_history']:
             st.session_state['pending_prompt'] = s.split(" ", 1)[1]
             st.rerun()
 
-# Chat history
 for message in st.session_state['message_history']:
     with st.chat_message(message['role']):
         st.markdown(message['content'])
 
 # ---------------- Input ----------------
-user_input = st.chat_input('Ask Gemini-style... type here')
+user_input = st.chat_input('Ask anything...')
 
 if not user_input and st.session_state['pending_prompt']:
     user_input = st.session_state['pending_prompt']
