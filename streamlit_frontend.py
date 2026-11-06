@@ -190,6 +190,26 @@ if not user_input and st.session_state['pending_prompt']:
     user_input = st.session_state['pending_prompt']
     st.session_state['pending_prompt'] = None
 
+# if user_input:
+#     current_thread = st.session_state['thread_id']
+
+#     st.session_state['message_history'].append({'role': 'user', 'content': user_input})
+#     with st.chat_message('user'):
+#         st.markdown(user_input)
+
+#     CONFIG = {'configurable': {'thread_id': current_thread}}
+
+#     with st.chat_message('assistant'):
+#         with st.spinner("Thinking..."):
+#             response = chatbot.invoke(
+#                 {'messages': [HumanMessage(content=user_input)]},
+#                 config=CONFIG,
+#             )
+#         ai_message = response['messages'][-1].content
+#         st.markdown(ai_message)
+
+#     st.session_state['message_history'].append({'role': 'assistant', 'content': ai_message})
+#     st.rerun()
 if user_input:
     current_thread = st.session_state['thread_id']
 
@@ -199,14 +219,17 @@ if user_input:
 
     CONFIG = {'configurable': {'thread_id': current_thread}}
 
+    def ai_only_stream():
+        for message_chunk, metadata in chatbot.stream(
+            {'messages': [HumanMessage(content=user_input)]},
+            config=CONFIG,
+            stream_mode='messages',
+        ):
+            if isinstance(message_chunk, AIMessage) and message_chunk.content:
+                yield message_chunk.content
+
     with st.chat_message('assistant'):
-        with st.spinner("Thinking..."):
-            response = chatbot.invoke(
-                {'messages': [HumanMessage(content=user_input)]},
-                config=CONFIG,
-            )
-        ai_message = response['messages'][-1].content
-        st.markdown(ai_message)
+        ai_message = st.write_stream(ai_only_stream())
 
     st.session_state['message_history'].append({'role': 'assistant', 'content': ai_message})
     st.rerun()
