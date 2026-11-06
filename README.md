@@ -3,8 +3,7 @@
 An interactive, multi-threaded conversational AI application built with **LangGraph**, **LangChain**, and **Streamlit**. It uses an SQLite checkpointer to persist conversation histories across sessions and dynamically names past threads in the sidebar using actual user prompts, much like ChatGPT and Gemini.
 
 ##  Demo
-
-![Demo](assets/demo.gif)
+Live: https://chatbot247.streamlit.app/
 
 ##  System Architecture
 
