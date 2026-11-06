@@ -1,0 +1,16 @@
+# Virtual Environment
+myenv/
+venv/
+.venv/
+
+# SQLite Database & Checkpoints
+*.db
+*.sqlite
+checkpoints.sqlite
+
+# Environment variables & Secrets
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
