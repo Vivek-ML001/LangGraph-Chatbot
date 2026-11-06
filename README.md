@@ -100,4 +100,3 @@ GROQ_API_KEY=your_groq_api_key_here
 ```bash
 streamlit run streamlit_frontend.py
 ```
-Open http://localhost:8501 in your browser.
