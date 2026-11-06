@@ -3,7 +3,7 @@ import streamlit as st
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph_backend import chatbot, retrive_all_thread
 
-st.set_page_config(page_title="Langgraph Chatbot", page_icon="✨", layout="centered")
+st.set_page_config(page_title="Samvad", page_icon="🪐", layout="centered")
 
 USER_NAME = "Vivek"
 
@@ -136,7 +136,7 @@ if 'pending_prompt' not in st.session_state:
 
 
 # ---------------- Sidebar ----------------
-st.sidebar.title('✨ Langgraph Chatbot')
+st.sidebar.title('🪐 Samvad')
 
 if st.sidebar.button('✏️  New chat', key='new_chat'):
     reset_chat()
