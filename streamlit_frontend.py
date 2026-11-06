@@ -85,15 +85,7 @@ footer {visibility: hidden;}
     width: fit-content;
 }
 
-/* Chat input pill */
-[data-testid="stChatInput"] {
-    border-radius: 32px;
-    background: #1e1f20;
-    border: 1px solid #333537;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
-    padding: 0.25rem 0.5rem;
-}
-[data-testid="stChatInput"] textarea {font-size: 1.05rem; color: #e3e3e3;}
+/* Chat input: default Streamlit rectangular (no custom styling) */
 [data-testid="stBottom"], [data-testid="stBottom"] > div {background: transparent;}
 </style>
 """, unsafe_allow_html=True)
