@@ -62,7 +62,7 @@ Lang_Graph_Chat/
 | LLM Provider | ChatGroq |
 | Persistence | `langgraph.checkpoint.sqlite.SqliteSaver` |
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Prerequisites
 - Python 3.10+
